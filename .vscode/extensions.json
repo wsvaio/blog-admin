@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "mikestead.dotenv",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "voorjaar.windicss-intellisense",
+    "zixuanchen.vitest-explorer",
+    "esbenp.prettier-vscode",
+    "vue.vscode-typescript-vue-plugin"
+  ]
+}
