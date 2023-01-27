@@ -49,10 +49,18 @@ export default defineConfig(({ mode }) => {
 
     server: {
       proxy: {
-        "/api": {
-          target: VITE_BASE_API,
+        "/common": {
+          target: "http://124.220.194.60/api",
+          // target: "http://127.0.0.1:7002",
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, ""),
+          // rewrite: path => path.replace(/^\/common/, ""),
+        },
+        "/blog": {
+          // target: VITE_BASE_API,
+          target: "http://127.0.0.1:7002",
+          // target: "http://124.220.194.60/api",
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/blog/, ""),
         },
       },
     },

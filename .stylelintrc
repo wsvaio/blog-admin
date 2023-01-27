@@ -13,6 +13,7 @@
   ],
   "rules": {
     "unit-case": null,
+    "declaration-block-trailing-semicolon": null,
     "selector-pseudo-class-no-unknown": [true, {
       "ignorePseudoClasses": ["/^deep/"]
     }],

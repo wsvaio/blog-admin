@@ -7,3 +7,6 @@ import "./theme.less";
 import "./main.less";
 
 import "uno.css";
+
+import "@wangeditor/editor/dist/css/style.css";
+import "./wangEditorDark.less";

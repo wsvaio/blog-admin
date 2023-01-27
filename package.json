@@ -15,7 +15,9 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.6.0",
-    "@wsvaio/api": "^0.0.12-4",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^5.1.12",
+    "@wsvaio/api": "^0.0.13",
     "@wsvaio/utils": "^0.0.15",
     "echarts": "^5.4.0",
     "element-plus": "^2.2.28",

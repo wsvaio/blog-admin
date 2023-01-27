@@ -6,22 +6,22 @@ const { DEV, VITE_BASE_API } = import.meta.env;
 export const { post, get, put, patch, del, request, use } = createAPI<{
   success?: string;
 }>({
-  baseURL: DEV ? "/api" : VITE_BASE_API,
+  baseURL: DEV ? "" : VITE_BASE_API,
   log: true, // 控制台是否打印日志
   timeout: 0,
   headers: {},
+  cache: "no-cache",
 });
 
 // 请求发出前
 use("befores")(async ctx => Progress.start());
 
 // 请求发出后
-// 复制响应消息
-use("afters")(async ctx => (ctx.message = ctx.data?.msg ?? ctx.message));
-// 判断响应状态码
-use("afters")(async ctx => (ctx.data?.code < 200 || ctx.data?.code > 299) && Promise.reject(ctx));
-// 响应内容扁平化
-use("afters")(async ctx => (ctx.data = ctx.data?.data ?? ctx.data));
+
+use("afters")(async ctx => {
+  if (ctx.data?.success != false) return;
+  throw new Error(ctx.data.message || ctx.message);
+});
 
 // 结束时总会运行
 // 进度条结束
