@@ -25,6 +25,20 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+router.beforeEach(to => {
+  const user = userStore();
+  const code = to.query.code;
+
+  if (typeof code != "string" || user.token) return;
+  user.login(code);
+});
+
+router.beforeEach(to => {
+  const user = userStore();
+  if (user.username || !user.token) return;
+  user.syncUser();
+});
+
 router.afterEach(() => Progress.clear());
 
 export default (app: App) => app.use(router);

@@ -1,11 +1,10 @@
-<script setup name="comment" lang="ts">
-import { Delete, DocumentAdd, Search, Refresh } from "@element-plus/icons-vue";
-import { merge, sleep, pick, filePicker } from "@wsvaio/utils";
+<script setup name="user" lang="ts">
+import { Delete, Search, Refresh } from "@element-plus/icons-vue";
 const action = async ({ checkList, drawer, payload, refresh, close }: vtableCtx) => {
   const name = payload.$name;
   if (name == "删除") {
     if (checkList.length == 0) return ElNotification.warning("请选择删除项");
-    await Promise.all(checkList.map(({ id }) => delComment({ p: { id } })));
+    await Promise.all(checkList.map(({ id }) => delUser({ p: { id } })));
     ElNotification.success("删除成功");
   }
   // } else if (name == "添加") {
@@ -21,17 +20,14 @@ const list = listStore();
 </script>
 
 <template>
-  <vtable :data="query => $apis.getComment({ query })" :action="action">
+  <vtable :data="query => $apis.getUser({ query })" :action="action">
     <template #top="{ params, act, drawer, payload }: vtableCtx">
       <el-form :disabled="false">
         <el-input v-model="params.key" :prefix-icon="Search" placeholder="搜索"></el-input>
       </el-form>
-      <el-select v-model="params.articleId" filterable clearable @focus="list.syncArticles">
+      <!-- <el-select v-model="params.articleId" filterable clearable @focus="list.syncArticles">
         <el-option v-for="item in list.articles" :label="item.title" :value="item.id"></el-option>
-      </el-select>
-      <el-select v-model="params.userId" filterable clearable @focus="list.syncUsers">
-        <el-option v-for="item in list.users" :label="item.username" :value="item.id"></el-option>
-      </el-select>
+      </el-select> -->
       <el-button type="info" :icon="Refresh" m="l-auto" @click="act()">刷新</el-button>
       <!-- <el-button
         type="primary"
@@ -46,10 +42,17 @@ const list = listStore();
     </template>
     <template #="{ drawer, form, payload, act }: vtableCtx">
       <el-table-column type="selection" :align="'center'"></el-table-column>
-      <el-table-column label="用户名称" prop="user.username" sortable></el-table-column>
-      <el-table-column label="用户邮箱" prop="user.email" sortable></el-table-column>
-      <el-table-column label="文章名称" prop="article.title" sortable></el-table-column>
-      <el-table-column label="评论内容" prop="content" sortable></el-table-column>
+      <el-table-column label="头像" prop="image" sortable #="{ row }">
+        <el-image
+          :src="row.image"
+          class="w-50px h-50px"
+          fit="contain"
+          :preview-src-list="[row.image]"
+          preview-teleported
+        ></el-image>
+      </el-table-column>
+      <el-table-column label="名称" prop="username" sortable></el-table-column>
+      <el-table-column label="邮箱" prop="email" sortable></el-table-column>
       <el-table-column label="修改日期" prop="updated_at" sortable></el-table-column>
       <el-table-column label="创建日期" prop="created_at" sortable></el-table-column>
       <!-- <el-table-column label="操作" #="{ row }">

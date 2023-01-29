@@ -16,11 +16,25 @@ export const { post, get, put, patch, del, request, use } = createAPI<{
 // 请求发出前
 use("befores")(async ctx => Progress.start());
 
+use("befores")(async ctx => {
+  const user = userStore();
+  ctx.headers["Authorization"] = user.token;
+});
+
 // 请求发出后
 
 use("afters")(async ctx => {
   if (ctx.data?.success != false) return;
   throw new Error(ctx.data.message || ctx.message);
+});
+
+// 请求发出后
+use("afters")(async ctx => (ctx.data = ctx.data.data));
+
+use("errors")(async ctx => {
+  if (ctx.message != "认证失败") return;
+  const user = userStore();
+  user.logout();
 });
 
 // 结束时总会运行

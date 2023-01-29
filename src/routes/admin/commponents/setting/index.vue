@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { merge, sleep } from "@wsvaio/utils";
 import useStore from "@/routes/admin/store";
+import defaultAvatar from "@/assets/github.svg";
 const { layout } = $(useStore());
 const router = useRouter();
 const { toggle, isFullscreen } = useFullscreen();
@@ -9,15 +10,7 @@ const admin = adminStore();
 const auth = authStore();
 const handleCommand = (command: string) => {
   if (command === "logout") {
-    auth.logout();
-  } else if (command === "editpwd") {
-    if (!vdialogRef) return;
-    merge(vdialogRef.dialog, {
-      title: "修改密码",
-      width: "500px",
-    });
-    vdialogRef.payload.$slot = "editpwd";
-    vdialogRef.form.labelPosition = "top";
+    user.logout();
   }
 };
 
@@ -28,6 +21,12 @@ const submit = async ({ form, payload, close }: vdialogCtx) => {
 const isDark = useDark();
 
 const vdialogRef = $ref<vdialogCtx>();
+
+const user = userStore();
+const handleClick = async () => {
+  if (user.token || user.loading) return;
+  jumpToGithubAccess(`${location.origin}${location.pathname}`);
+};
 </script>
 
 <template tag="div" class="setting">
@@ -55,14 +54,13 @@ const vdialogRef = $ref<vdialogCtx>();
     </template>
     {{ isFullscreen ? "退出全屏" : "全屏" }}
   </n-tooltip>
-  <el-dropdown size="medium" @command="handleCommand">
-    <div class="user-info">
-      <img class="user-avatar" src="@/assets/avatar.png" />
-      <span class="user-name">{{ `名称` }}</span>
+  <el-dropdown size="medium" :disabled="!user.token" @command="handleCommand">
+    <div v-loading="user.loading" class="user-info" @click="handleClick">
+      <img class="user-avatar" :src="user.image || defaultAvatar" />
+      <span class="user-name">{{ user.username || "登录" }}</span>
     </div>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item command="editpwd">修改密码</el-dropdown-item>
         <el-dropdown-item command="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>

@@ -1,4 +1,4 @@
-<script setup name="varticle" lang="ts">
+<script setup name="tag" lang="ts">
 import { Delete, DocumentAdd, Search, Refresh } from "@element-plus/icons-vue";
 import { merge } from "@wsvaio/utils";
 const action = async ({ checkList, payload, refresh, close }: vtableCtx) => {

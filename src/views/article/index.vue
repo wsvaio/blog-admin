@@ -19,6 +19,9 @@ const action = async ({ checkList, drawer, payload, refresh, close }: vtableCtx)
     payload.typeName = payload.type.name;
     payload.tagNames = payload?.tags?.map(item => item.name) || [];
     payload.$slot = "add";
+
+    const article = await getArticle({ p: { id: payload.id } });
+    payload.content = article.content;
     return;
   }
 

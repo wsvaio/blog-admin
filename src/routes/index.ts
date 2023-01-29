@@ -21,12 +21,18 @@ export const adminRoutes: RouteRecordRaw[] = [
     meta: { title: "分类", icon: Menu },
     component: () => import("@/views/type/index.vue"),
   },
-  // {
-  //   path: "comment",
-  //   name: "comment",
-  //   meta: { title: "comment", icon: Menu },
-  //   component: () => import("@/views/comment/index.vue"),
-  // },
+  {
+    path: "comment",
+    name: "comment",
+    meta: { title: "评论", icon: Menu },
+    component: () => import("@/views/comment/index.vue"),
+  },
+  {
+    path: "user",
+    name: "user",
+    meta: { title: "用户", icon: Menu },
+    component: () => import("@/views/user/index.vue"),
+  },
 ];
 
 const routes: RouteRecordRaw[] = [

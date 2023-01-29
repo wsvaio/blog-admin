@@ -1,4 +1,4 @@
-<script setup name="varticle" lang="ts">
+<script setup name="type" lang="ts">
 import { Delete, DocumentAdd, Search, Refresh } from "@element-plus/icons-vue";
 import { merge, sleep, pick, filePicker } from "@wsvaio/utils";
 const action = async ({ checkList, drawer, payload, refresh, close }: vtableCtx) => {

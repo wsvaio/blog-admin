@@ -84,3 +84,11 @@ defineExpose(ctx);
     <slot :="ctx"></slot>
   </el-form>
 </template>
+
+<style scoped lang="less">
+@media (max-width: 768px) {
+  :deep(.el-drawer) {
+    width: 100% !important;
+  }
+}
+</style>
