@@ -19,12 +19,12 @@ const tip = {
       <el-divider><span text="16px">主题</span></el-divider>
       <!-- <el-switch v-model="main.theme" :active-value="'dark'" :inactive-value="'light'" /> -->
       <theme-switch m="x-auto" />
-      <el-divider><span text="16px">导航栏模式</span></el-divider>
-      <div class="layout">
+      <el-divider v-if="main.layout != 'mobile'"><span text="16px">导航栏模式</span></el-divider>
+      <div class="layout" v-if="main.layout != 'mobile'">
         <el-tooltip v-for="item in ['left', 'top-mix', 'top', 'left-mix']" :content="tip[item]">
           <div
             :class="[item, main.layout == item && 'active']"
-            @click="(main.layout as string) = item"
+            @click="main.layout != 'mobile' && ((main.layout as string) = item)"
           ></div>
         </el-tooltip>
       </div>

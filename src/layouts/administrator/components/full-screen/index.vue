@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isFullscreen, toggle } = useFullscreen(document.documentElement);
+const { isFullscreen, toggle } = useFullscreen();
 </script>
 
 <template>
