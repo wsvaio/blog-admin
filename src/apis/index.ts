@@ -1,4 +1,4 @@
-import { get, post, patch, put, del } from "@/apis/request";
+import { get, post, put, del } from "@/apis/request";
 export const getArticle = get("/blog/article/:id?");
 export const postArticle = post("/blog/article");
 export const putArticle = put("/blog/article");

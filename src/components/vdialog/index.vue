@@ -4,7 +4,9 @@ import { FormInstance } from "element-plus";
 import { merge } from "@wsvaio/utils";
 const {
   action,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   form: formProps = {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   dialog: dialogProps = {},
 } = defineProps<{
   action: (ctx: vdialogCtx) => Promise<any>;
@@ -37,8 +39,8 @@ const { runAsync, loading } = $(
     },
     {
       manual: true,
-    }
-  )
+    },
+  ),
 );
 watchEffect(() => (payload.$show = !!payload.$slot));
 
@@ -49,28 +51,32 @@ const close = () => {
   elFormRef?.clearValidate();
 };
 
-const ctx = reactive({ dialog, form, act: runAsync, payload, loading, close });
+const ctx = reactive({ dialog, form, act: runAsync, payload, close, loading });
 onMounted(() => elFormRef && (ctx.elFormRef = elFormRef));
+watchEffect(() => (ctx.loading = loading));
 defineExpose(ctx);
 </script>
 
 <template>
-  <el-form
-    ref="elFormRef"
-    label-position="top"
-    :model="form"
-    :="{ ...formProps, ...form }"
-    :disabled="loading"
-  >
+  <el-form ref="elFormRef" label-position="top" :model="payload" :="{ ...formProps, ...form }">
     <el-dialog
       v-model="payload.$show"
       :="{ ...dialogProps, ...dialog }"
-      :before-close="done => loading || done()"
+      :before-close="(done) => loading || done()"
       @closed="close"
     >
+      <template #header>
+        <slot :name="`${payload.$slot}-header`" :="ctx">
+          <span class="el-dialog__title">{{
+            payload.$name || dialog.title || dialogProps.title
+          }}</span>
+        </slot>
+      </template>
+
       <div v-loading="loading" min="h-full">
         <slot :name="payload.$slot" :="ctx"></slot>
       </div>
+
       <template #footer>
         <slot :name="`${payload.$slot}-footer`" :="ctx">
           <el-button @click="payload.$show = false">取消</el-button>
@@ -80,6 +86,7 @@ defineExpose(ctx);
         </slot>
       </template>
     </el-dialog>
+
     <slot :="ctx"></slot>
   </el-form>
 </template>

@@ -1,9 +1,11 @@
 <script setup name="tag" lang="ts">
-import { Delete, DocumentAdd, Search, Refresh } from "@element-plus/icons-vue";
 import { merge } from "@wsvaio/utils";
-const action = async ({ checkList, payload, refresh, close }: vtableCtx) => {
+const vtableRef = $ref<vtableCtx>();
+const vdialogRef = $ref<vdialogCtx>();
+const action = async ({ payload, close }: vdialogCtx) => {
   const name = payload.$name;
-  if (name == "删除") {
+  const { checkList, refresh } = $(vtableRef);
+  if (name == "批量删除") {
     if (checkList.length == 0) return ElNotification.warning("请选择删除项");
     await Promise.all(checkList.map(({ id }) => delTag({ p: { id } })));
     ElNotification.success("删除成功");
@@ -19,46 +21,64 @@ const action = async ({ checkList, payload, refresh, close }: vtableCtx) => {
 </script>
 
 <template>
-  <vtable :data="query => $apis.getTag({ query })" :action="action">
-    <template #top="{ params, act, drawer, payload }: vtableCtx">
-      <el-form :disabled="false">
-        <el-input v-model="params.key" :prefix-icon="Search" placeholder="搜索"></el-input>
-      </el-form>
+  <vdialog
+    :action="action"
+    ref="vdialogRef"
+    h="full"
+    min="h-404px"
+    :form="{ disabled: vtableRef?.loading || vdialogRef?.loading }"
+  >
+    <template #default="{ act, payload }">
+      <vtable :data="(query) => getTag({ query })" :action="action" ref="vtableRef">
+        <template #header="{ params, refresh }: vtableCtx">
+          <el-input
+            class="!w-[auto]"
+            v-model="params.key"
+            :prefix-icon="ISearch"
+            placeholder="搜索"
+          />
+          <div m="l-auto">
+            <el-button type="primary" @click="refresh">查询</el-button>
+            <el-button @click="merge(params, {}, { del: true }), refresh()">重置</el-button>
+          </div>
+        </template>
+        <template #top>
+          <h3 m="0">标签列表</h3>
+          <el-button
+            type="primary"
+            m="l-auto"
+            plain
+            @click="merge(payload, { $name: '添加', $slot: 'add' })"
+          >
+            添加
+          </el-button>
 
-      <el-button type="info" :icon="Refresh" m="l-auto" @click="act()">刷新</el-button>
-      <el-button
-        type="primary"
-        :icon="DocumentAdd"
-        @click="(drawer.title = payload.$name = '添加'), (payload.$slot = 'add')"
-      >
-        添加
-      </el-button>
-      <el-popconfirm #reference title="您确定要删除吗？" @confirm="act('删除')">
-        <el-button :icon="Delete" type="danger">删除</el-button>
-      </el-popconfirm>
-    </template>
-    <template #="{ drawer, form, payload, act }: vtableCtx">
-      <el-table-column type="selection" :align="'center'"></el-table-column>
-      <el-table-column label="名称" prop="name" sortable></el-table-column>
-      <el-table-column label="修改日期" prop="updated_at" sortable></el-table-column>
-      <el-table-column label="创建日期" prop="created_at" sortable></el-table-column>
-      <el-table-column label="操作" #="{ row }">
-        <el-link
-          type="primary"
-          @click="
-            merge(payload, row), (drawer.title = payload.$name = '详情'), (payload.$slot = 'add')
-          "
-          >详情</el-link
-        >
-      </el-table-column>
+          <el-popconfirm #reference title="确定删除？" @confirm="act('批量删除')">
+            <el-button type="danger" m="l-auto" plain :disabled="!vtableRef?.checkList.length"
+              >删除</el-button
+            >
+          </el-popconfirm>
+        </template>
+        <template #default>
+          <el-table-column type="selection" :align="'center'" />
+          <el-table-column label="名称" prop="name" sortable />
+          <el-table-column label="修改日期" prop="updated_at" sortable />
+          <el-table-column label="创建日期" prop="created_at" sortable />
+          <el-table-column label="操作" #="{ row }">
+            <el-link type="primary" @click="merge(payload, { ...row, $name: '详情', $slot: 'add' })"
+              >详情</el-link
+            >
+          </el-table-column>
+        </template>
+      </vtable>
     </template>
 
-    <template #add="{ payload, drawer }: vtableCtx">
+    <template #add="{ payload }">
       <el-form-item label="名称" prop="name">
-        <el-input v-model="payload.name"></el-input>
+        <el-input v-model="payload.name" />
       </el-form-item>
     </template>
-  </vtable>
+  </vdialog>
 </template>
 
 <!-- <style lang="less" scoped></style> -->

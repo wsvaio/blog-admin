@@ -1,8 +1,7 @@
 import { RouteRecordRaw } from "vue-router";
-
 import Menu from "~icons/ep/menu";
 
-export const adminRoutes: RouteRecordRaw[] = [
+export const administratorChildren = [
   {
     path: "article",
     name: "varticle",
@@ -33,26 +32,20 @@ export const adminRoutes: RouteRecordRaw[] = [
     meta: { title: "用户", icon: Menu },
     component: () => import("@/views/user/index.vue"),
   },
-];
+] as RouteRecordRaw[];
 
-const routes: RouteRecordRaw[] = [
+export default [
   {
     path: "/",
-    name: "adminLayout",
+    name: "administrator",
     redirect: { name: "varticle" },
-    component: () => import("@/routes/admin/index.vue"),
-    children: adminRoutes,
+    component: () => import("@/layouts/administrator/index.vue"),
+    children: administratorChildren,
   },
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/login/index.vue"),
-  },
+
   {
     path: "/:pathMatch(.*)",
     name: "notfound",
-    component: () => import("./notfound/index.vue"),
+    component: () => import("@/views/notfound/index.vue"),
   },
-];
-
-export default routes;
+] as RouteRecordRaw[];

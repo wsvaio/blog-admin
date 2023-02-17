@@ -1,0 +1,90 @@
+:root {
+  --menu-bg-color: var(--aside-bg-color, var(--bg-color));
+  --menu-text-color: var(--el-text-color-primary);
+  --menu-text-active-color: var(--el-color-primary);
+  // --menu-bg-sub-color: var(--el-bg-color);
+  --menu-bg-active-color: var(--el-bg-color);
+}
+
+html:not(.dark) {
+  --menu-bg-color: var(--aside-bg-color, #001529);
+  --menu-text-color: rgb(var(--theme-color) / 70%);
+  --menu-text-active-color: rgb(var(--theme-color) / 100%);
+  --menu-bg-sub-color: rgb(var(--theme-color) / 10%);
+  --menu-bg-collaspe-color: rgb(var(--theme-color-invert) / 50%);
+  --menu-bg-active-color: var(--el-color-primary);
+}
+
+.menu-nav-item {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  color: var(--menu-text-color);
+  background: var(--menu-bg-color);
+  white-space: nowrap;
+  overflow: hidden;
+
+  .icon {
+    font-size: 16px;
+    flex: none;
+  }
+
+  .text {
+    margin-left: 6px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  .arrow {
+    margin-left: auto;
+    width: 14px;
+  }
+
+  &:hover {
+    color: var(--menu-text-active-color);
+    cursor: pointer;
+  }
+
+  &.sub {
+    background-color: var(--menu-bg-sub-color);
+  }
+
+  &:not(.title).active {
+    color: var(--menu-text-active-color);
+    background: var(--menu-bg-active-color, var(--el-color-primary));
+  }
+
+  &.title.active {
+    color: var(--menu-text-active-color);
+  }
+}
+
+.vpopup-popuper.nav-popup,
+.vpopup-popuper.nav-popup-list {
+  box-shadow: var(--el-box-shadow);
+}
+
+.left .vpopup-popuper.nav-popup,
+.left-mix .vpopup-popuper.nav-popup-list {
+  background-color: var(--menu-bg-color);
+}
+
+.top .vpopup-popuper.nav-popup,
+.top-mix .vpopup-popuper.nav-popup {
+  background-color: var(--el-bg-color);
+}
+
+.menu-left-mix-trigger .menu-nav-item,
+.collapse .menu-nav-item.nav-popup.vertical.top-level {
+  justify-content: center;
+  border: 3px solid transparent;
+  border-top: 0;
+  border-bottom: 0;
+
+  &.active {
+    border-left-color: var(--el-color-primary);
+    background: var(--menu-bg-collaspe-color);
+  }
+}

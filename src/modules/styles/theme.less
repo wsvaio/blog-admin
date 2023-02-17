@@ -1,53 +1,21 @@
 :root {
-  --html-font-size: 16PX;
-  --container-max-width: 100%;
-  --bg-hover-color: #f6f6f6;
-  --el-color-primary: #0960bd !important;
+  --theme-color: 255 255 255;
+  --theme-color-invert: 0 0 0;
+  --color: #000;
+  --bg-color: #fff;
+  --main-bg-color: #f0f2f5;
+  --border-color: var(--el-border-color);
+  --primary-color: #0960bd;
 }
 
 html.dark {
-  --bg-hover-color: #242424;
+  --theme-color: 0 0 0;
+  --theme-color-invert: 255 255 255;
+  --color: #fff;
+  --bg-color: #212121;
+  --main-bg-color: #000;
 }
 
-/* xs */
-@media (max-width: 576PX) {
-  :root {
-    --html-font-size: calc(100vw / 3.75);
-    --container-max-width: 100%;
-  }
-}
-
-/* sm */
-@media (min-width: 576PX) {
-  :root {
-    --container-max-width: 576PX;
-  }
-}
-
-/* md */
-@media (min-width: 768PX) {
-  :root {
-    --container-max-width: 768PX;
-  }
-}
-
-/* lg */
-@media (min-width: 992PX) {
-  :root {
-    --container-max-width: 992PX;
-  }
-}
-
-/* xl */
-@media (min-width: 1200PX) {
-  :root {
-    --container-max-width: 1200PX;
-  }
-}
-
-/* 2xl */
-@media (min-width: 1400PX) {
-  :root {
-    --container-max-width: 1400PX;
-  }
+html {
+  --el-color-primary: var(--primary-color, #0960bd) !important;
 }

@@ -1,9 +1,9 @@
-import App from "@/routes/App.vue";
-
+import { createApp } from "vue";
+import App from "./App.vue";
 const app = createApp(App);
 
-const module = import.meta.glob("@/modules/*/index.ts", { eager: true });
+const modules = import.meta.glob("@/modules/*/index.ts", { eager: true });
 
-Object.values<any>(module).forEach(item => item?.default && item?.default(app));
+Object.values<any>(modules).forEach((item) => item?.default && item?.default(app));
 
 app.mount("#app");

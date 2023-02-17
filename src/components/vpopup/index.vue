@@ -29,7 +29,7 @@ const syncIsShow = async (show, delay = 0) => {
   setIsShow(show, delay);
   syncIsShowInject && syncIsShowInject(show, duration / 2 + delay);
 };
-watch($$(active), val => {
+watch($$(active), (val) => {
   if (!val) syncIsShow(false);
 });
 provide("syncIsShow", syncIsShow);
@@ -68,12 +68,11 @@ const setPosition = (direction = "bottom") => {
 };
 
 const handleMouseEvent = (ev: MouseEvent) => {
-  if (!active) return;
-  if (ev.type == "mouseleave") syncIsShow(false);
+  if (ev.type == "mouseleave") return syncIsShow(false);
   else syncIsShow(true);
 };
 
-watch($$(isShow), val => {
+watch($$(isShow), (val) => {
   if (!val) return;
   popuperStyle.maxWidth = ["left", "right"].includes(direction)
     ? `calc(50vw - ${gap * 4}px)`
@@ -120,6 +119,7 @@ onBeforeMount(() => {
     @mouseleave="handleMouseEvent"
     @mousemove="handleMouseEvent"
     @mouseenter="handleMouseEvent"
+    @click="handleMouseEvent"
   >
     <slot></slot>
   </div>
@@ -134,6 +134,7 @@ onBeforeMount(() => {
         @mouseleave="handleMouseEvent"
         @mousemove="handleMouseEvent"
         @mouseenter="handleMouseEvent"
+        @click="handleMouseEvent"
       >
         <slot name="popup"></slot>
       </div>

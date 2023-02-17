@@ -1,0 +1,181 @@
+.administrator > aside {
+  width: 210px;
+}
+
+.dark .administrator {
+  & > aside {
+    border-right: 1px solid var(--border-color);
+  }
+
+  .logo-left.logo {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .collapse-bottom {
+    border-top: 1px solid var(--border-color);
+  }
+
+  .menu-left-mix {
+    border-right: 1px solid var(--border-color);
+  }
+}
+
+.left .administrator {
+  & > aside {
+    transition: width 0.3s;
+
+    &.collapse {
+      width: 48px;
+    }
+
+    .logo-left {
+      &.collapse {
+        justify-content: center;
+
+        h3 {
+          display: none;
+        }
+      }
+    }
+
+    .menu-left {
+      &.collapse {
+        .menu-nav-item {
+          justify-content: center;
+
+          .text {
+            display: none;
+          }
+
+          .arrow {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.top-mix .administrator {
+  & > aside {
+    transition: width 0.3s;
+
+    // .logo-left {
+    //   background-color: var(--bg-color);
+    //   background-color: var(--header-bg-color, var(--bg-color));
+    //   color: var(--color);
+    // }
+
+    &.hide {
+      width: 0 !important;
+    }
+
+    &.collapse {
+      width: 48px;
+
+      .logo-left {
+        &.collapse {
+          justify-content: center;
+
+          h3 {
+            display: none;
+          }
+        }
+      }
+
+      .menu-left {
+        .menu-nav-item {
+          justify-content: center;
+
+          .text {
+            display: none;
+          }
+
+          .arrow {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  & > section {
+    header {
+      .logo-top.logo:not(.hide) {
+        display: none;
+      }
+
+      // .logo-top.logo {
+      //   width: 210px;
+      // }
+    }
+
+    // &.collapse {
+    //   .logo-top.logo {
+    //     width: 48px;
+    //   }
+    // }
+  }
+}
+
+.left-mix .administrator {
+  & > aside {
+    transition: width 0.3s;
+    width: 80px;
+    border-right: none;
+
+    .logo-left {
+      justify-content: center;
+
+      h3 {
+        display: none;
+      }
+    }
+
+    &.collapse {
+      width: 48px;
+
+      .menu-nav-item {
+        justify-content: center;
+
+        .text {
+          display: none;
+        }
+
+        .arrow {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.mobile .administrator {
+  & > aside {
+    transition: transform 0.3s;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: 0;
+
+    &.collapse {
+      transform: translateX(-100%);
+    }
+  }
+
+  & > section {
+    transition: filter 0.3s;
+
+    &:not(.collapse) {
+      filter: brightness(50%);
+    }
+
+    & > header {
+      .logo-top {
+        h3 {
+          display: none;
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,12 @@
-dist
-node_modules
+/dist/*
+.local
+.output.js
+/node_modules/**
+
+**/*.svg
+**/*.sh
+
+/public/*
+
 auto-import.d.ts
 auto-components.d.ts

@@ -1,46 +1,18 @@
-👍
+# Vue 3 + TypeScript + Vite
 
-## 通用开发配置模板
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-主要技术：vue3 vite3 ts pinia vue-router element-plus
-代码校验：stylelint eslint commitlint husky lint-staged commitizen
+## Recommended IDE Setup
 
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Commit Message 格式
-```xml
-<type>(<scope>): <subject>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
-### *type
-选择您要提交的更改类型：
-- feat: 一个新功能
-- fix: 一个bug
-- docs: 文档增删改
-- style: 样式修改（空白、格式、缺少分号等）
-- refactor: 既不修复bug也不添加新功能的更改
-- perf: 性能优化
-- test: 增加测试
-- build: 影响构建系统或外部依赖项的更改（示例范围：gulp、broccoli、npm）
-- ci: 对CI配置文件和脚本的更改（示例范围：Travis，Circle，BrowerStack，SauceLabs）
-- revert: 回退历史版本
-- conflict: 修改冲突
-- font: 字体文件更新
-- delete: 删除文件
-- stash: 暂存文件
-### scope
-这个变化的范围是什么（例如组件或文件名）
-### *subject
-一个简短的修改描述
-### body
-一个更长的修改描述
-### footer
-Footer 部分只用于以下两种情况：
-- 不兼容改动
-  如果当前代码与上一个版本不兼容，则 Footer 部分以BREAKING CHANGE开头，后面是对变动的描述、以及变动理由和迁移方法
-- 关闭issue
-  如果当前 commit 针对某个issue，那么可以在 Footer 部分关闭这个 issue `Closes #123`
-- Revert
-  还有一种特殊情况，如果当前 commit 用于撤销以前的 commit，则必须以revert:开头，后面跟着被撤销 Commit 的 Header
+## Type Support For `.vue` Imports in TS
+
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+
+If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+
+1. Disable the built-in TypeScript Extension
+   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
+   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
+2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.

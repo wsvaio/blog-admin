@@ -1,59 +1,51 @@
 <script setup lang="ts">
 import { usePagination } from "vue-request";
 import { PaginationProps, TableProps } from "element-plus";
-import { debounce } from "@wsvaio/utils";
-const {
-  data: tableData,
-  action,
-  form: form = {},
-  drawer: drawer = {},
-} = defineProps<{
+// import { debounce } from "@wsvaio/utils";
+const { data: tableData } = defineProps<{
   data: (
-    params: Record<any, any>
+    params: Record<any, any>,
   ) => Promise<{ count: number; items: Record<any, any>[] } & Record<any, any>>;
-  action: (ctx: vtableCtx) => Promise<any>;
-
   pagination?: Partial<PaginationProps>;
-  drawer?: vtableCtx["drawer"];
-  form?: vtableCtx["form"];
   table?: Partial<TableProps<Record<any, any>>>;
 }>();
 
 const checkList = reactive<Record<any, any>[]>([]);
 const params = reactive<Record<any, any>>({});
-watch(
-  params,
-  debounce(() => refresh(), 500)
-);
+// watch(
+//   params,
+//   debounce(() => refresh(), 500),
+// );
 const { refresh, data, loading, pageSize, total, current } = $(
-  usePagination(data => tableData({ ...data, ...params }), {})
+  usePagination((data) => tableData({ ...data, ...params }), {}),
 );
 
-const vdrawerRef = $ref<vdrawerCtx>();
-const ctx = reactive(<vtableCtx>{ checkList, params, refresh });
-onMounted(() => vdrawerRef && Object.assign(ctx, vdrawerRef));
+const ctx = reactive({ checkList, params, refresh, loading });
+watchEffect(() => (ctx.loading = loading));
 defineExpose(ctx);
 </script>
 
 <template>
-  <vdrawer
-    ref="vdrawerRef"
-    :drawer="drawer"
-    :action="() => action(ctx)"
-    class="vtable"
-    :form="form"
-    @submited="refresh"
-  >
-    <template
-      v-for="name of Object.keys($slots).filter(
-        item => !['default', 'top', 'bottom'].includes(item)
-      )"
-      #[name]
+  <div class="vtable">
+    <div v-if="$slots.aside" class="vtable-aside">
+      <slot name="aside" :="ctx"></slot>
+    </div>
+    <div
+      v-if="$slots.header"
+      class="vtable-header"
+      :style="{
+        'grid-column': `span ${$slots.aside ? 1 : 2}`,
+      }"
     >
-      <slot :name="name" :="ctx"></slot>
-    </template>
-
-    <template #default>
+      <slot name="header" :="ctx"></slot>
+    </div>
+    <div
+      class="vtable-main"
+      :style="{
+        'grid-column': `span ${$slots.aside ? 1 : 2}`,
+        'grid-row': `span ${$slots.header ? 1 : 2}`,
+      }"
+    >
       <div v-if="$slots.top" class="vtable-top">
         <slot name="top" :="ctx"></slot>
       </div>
@@ -61,11 +53,11 @@ defineExpose(ctx);
       <el-table
         v-loading="loading"
         :data="(data && data['items']) || []"
-        :border="true"
         table-layout="auto"
         :="{ ...$attrs, ...$props.table }"
+        :border="true"
         @selection-change="
-          list => {
+          (list) => {
             checkList.length = 0;
             checkList.push(...list);
           }
@@ -75,51 +67,82 @@ defineExpose(ctx);
         <template #append>
           <slot name="bottom" :="ctx"></slot>
         </template>
+        <template #empty>
+          <slot name="empty" :="ctx"><el-empty description="暂无数据" /></slot>
+        </template>
       </el-table>
 
       <el-pagination
         v-model:currentPage="current"
         v-model:page-size="pageSize"
         :total="total"
-        overflow="auto"
-        m="t-25px"
         :page-sizes="[10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 1000]"
         layout="sizes, total, ->, prev, pager, next, jumper, slot"
         :="$props.pagination"
-      >
-      </el-pagination>
-    </template>
-  </vdrawer>
+        background
+      />
+    </div>
+  </div>
 </template>
 
 <style lang="less">
 .vtable {
-  .vtable-top {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content 1fr;
+  gap: 12px;
+  max-height: 100%;
+
+  .vtable-header,
+  .vtable-main,
+  .vtable-aside {
+    @apply shadow-sm;
+    background-color: var(--bg-color);
+    padding: 20px;
+    border-radius: 2px;
+  }
+
+  .vtable-aside {
+    grid-row: span 2;
+  }
+
+  .vtable-header {
     display: flex;
-    margin: -3px -6px;
     flex-wrap: wrap;
+    align-items: center;
+    // display: grid;
+    // grid-template-columns: repeat(auto-fill, 200px);
+    gap: 12px;
+    overflow: auto;
+  }
 
-    & > * {
-      margin: 3px 6px;
+  .vtable-main {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 
-      &[m="l-auto"] {
-        margin-left: auto;
+    .vtable-top {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      flex: none;
+      align-items: center;
+      overflow: auto;
+    }
+
+    .el-table {
+      thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
       }
     }
 
-    .el-button + .el-button {
-      margin-left: 6px;
+    .el-pagination {
+      overflow: auto;
+      margin-top: 12px;
+      flex: none;
     }
-  }
-
-  .el-table {
-    .el-link + .el-link {
-      margin-left: 8px;
-    }
-  }
-
-  .vtable-top ~ .el-table {
-    margin-top: 15px;
   }
 }
 </style>

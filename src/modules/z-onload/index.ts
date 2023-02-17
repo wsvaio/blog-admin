@@ -1,11 +1,8 @@
-import { App } from "vue";
-
 // 页面第一次加载 z前缀确保该文件最后加载
-export default (app: App) => {
-  const auth = authStore();
-  const admin = adminStore();
-
-  if (auth.isLogin) {
-    return;
-  }
+export default () => {
+  const url = new URL(location.href);
+  const code = url.searchParams.get("code");
+  const user = useUserStore();
+  if (typeof code != "string" || user.token) return;
+  user.login(code);
 };

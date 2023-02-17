@@ -1,11 +1,10 @@
 {
-	"semi": true,
-	"singleQuote": false,
-	"endOfLine": "auto",
   "printWidth": 100,
-  "bracketSameLine": false,
-  "htmlWhitespaceSensitivity": "css",
-  "singleAttributePerLine": false,
-  "tabWidth": 2,
-  "arrowParens": "avoid"
+  "semi": true,
+  "vueIndentScriptAndStyle": false,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "proseWrap": "never",
+  "htmlWhitespaceSensitivity": "strict",
+  "endOfLine": "auto"
 }

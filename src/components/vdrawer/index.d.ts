@@ -1,4 +1,4 @@
-import { DialogProps, DrawerProps, FormProps, FormInstance } from "element-plus";
+import { DrawerProps, FormProps, FormInstance } from "element-plus";
 declare global {
   type vdrawerCtx = {
     drawer: Writeable<Partial<DrawerProps>>;
