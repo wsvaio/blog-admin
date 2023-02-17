@@ -3,10 +3,9 @@ import defaultAvatar from "@/assets/github.svg";
 import IShutdown from "~icons/icons8/shutdown";
 const main = useMainStore();
 const user = useUserStore();
-const router = useRouter();
 const handleCommand = (item) => {
   if (item === "logout") {
-    router.push({ name: "login" });
+    user.logout();
   }
 };
 const handleClick = async () => {
